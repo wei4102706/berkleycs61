@@ -140,7 +140,7 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
+        // Done: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
         board.setViewingPerspective(side);
@@ -160,84 +160,70 @@ public class Model extends Observable {
 
     private boolean processOneColumn(int c) {
         boolean changed = false;
-
-        int topRow = board.size() - 1;
         boolean isMerged = false; // last same value tile is not merged
 
         for (int r = 2; r >= 0; r--) {
             if (board.tile(c, r) != null) {
                 Tile t = board.tile(c, r);
-                System.out.printf("current t at(%d, %d) with number %d --- ", c, r, t.value());
+                int lastTiltR = findLastNonEmptyTile(c, r);
 
-                int lastT = findLastNonEmptyTile(t);
-                if(lastT==-1){
-                    System.out.println("No above tile, lastT is -1");
-                }else {
-                    System.out.printf("lastT at Row: (%d, %d) -- ", c, lastT);
-                }
-
-                // 1. current is the top most item -> don't move
-                // 2. has space above:
-                if((lastT - 1) != r){
-                    // - above empty -> move
-                    if(lastT == -1) {
-                        board.move(c, topRow, t);
-                    } else if(!compareTileValue(c, lastT, r)){
-                        // - different value above + has space -> move
-                        board.move(c, lastT - 1, t);
+                // Case 1: Move + Merge
+                if(lastTiltR > 0 && hasSameValue(c, r, lastTiltR) && !isMerged){
+                    // Two tiles of the same value merge into one tile containing double the initial number.
+                    score += (t.value() + board.tile(c, lastTiltR).value());
+                    board.move(c, lastTiltR, t);
+                    isMerged = true;
+                    changed = true;
+                } else if ((lastTiltR > 0 && hasSameValue(c, r, lastTiltR) && isMerged)|| hasSpaceAbove(c, r)){
+                    // Case 2: Move Only
+                    // different value + have space above
+                    // same value + merged before
+                    isMerged = false;
+                    if(lastTiltR < 0){
+                        board.move(c, board.size() - 1, t);
                     } else {
-                        // - same value above + has space + not merged before -> move + merge
-                        if (!isMerged){
-                            score += t.value() + board.tile(c, lastT).value();
-                            board.move(c, lastT, t);
-                            isMerged = true;
-                        } else {
-                            // - same value above + has space +  merged before -> move
-                            board.move(c, lastT - 1, t);
-                        }
+                        board.move(c, lastTiltR - 1, t);
                     }
                     changed = true;
-                } else {
-                    // 3. no space above:
-                    // - different value above + no space -> don't move
-                    if(compareTileValue(c, lastT, r)){
-                        if (!isMerged){
-                            // - same value above + no space + not merged before -> move + merge
-                            score += (t.value() + board.tile(c, lastT).value());
-                            board.move(c, lastT, t);
-                            isMerged = true;
-                        } else {
-                            // - same value above + no space + merged before -> don't move
-                            board.move(c, lastT - 1, t);
-                        }
-                        changed = true;
-                    }
                 }
+                // Case 3: Stay still
+                    // a) current is the top most item -> don't move
+                    // b) different value + no space
             }
         }
         return changed;
     }
 
     // Find last non-empty tile above the current tile
-    private int findLastNonEmptyTile(Tile t) {
+    private int findLastNonEmptyTile(int c, int r) {
         int topRow = board.size() - 1;
-        for (int i = t.row() + 1; i <= topRow; i++) {
-            if (board.tile(t.col(), i) != null) {
-                System.out.printf("Found last non-empty t at (%d, %d) with number %d", t.col(), i, board.tile(t.col(), i).value());
+        // current is the top most tile -> no tile above
+        if(r == topRow){
+            return -1;
+        }
+
+        for (int i = r + 1; i <= topRow; i++) {
+            int currentRow = i;
+            if (board.tile(c, i) != null) {
                 return i;
             }
         }
 
-        if (board.tile(t.col(), board.size() - 1) != null) {
-            return board.size() - 1;
+        return -2;
+    }
+
+    private boolean hasSpaceAbove(int c, int r){
+        int lastNonEmptyTileRow = findLastNonEmptyTile(c, r);
+
+        if(lastNonEmptyTileRow == -1 || (lastNonEmptyTileRow - r == 1)){
+            return false;
         }
-        return -1;
+        return true;
     }
 
     // compare two tile's value, return true if two tile have same value
-    private boolean compareTileValue(int curCol, int curR, int targetR) {
-        System.out.printf("--curCol: %d, curR: %d, targetR: %d ", curCol, curR, targetR);
-        return board.tile(curCol, curR).value() == board.tile(curCol, targetR).value();
+    private boolean hasSameValue(int c, int curR, int targetR) {
+        return board.tile(c, curR).value() == board.tile(c, targetR).value();
     }
 
     /**
