@@ -7,7 +7,7 @@ import java.util.Observable;
 /**
  * The state of a game of 2048.
  *
- * @author TODO: YOUR NAME HERE
+ * @author Kathy Lo
  */
 public class Model extends Observable {
     /**
@@ -145,12 +145,13 @@ public class Model extends Observable {
         // changed local variable to true.
         board.setViewingPerspective(side);
         for (int c = 0; c < board.size(); c++) {
-            if (processOneColumn(c)){
+            if (processOneColumn(c)){ // if one column changed, the board changed
                 changed = true;
             }
         }
-        board.setViewingPerspective(Side.NORTH);
+        board.setViewingPerspective(Side.NORTH); // reset perspective
 
+        // Check whether the game is over (if so, set gameOver to true).
         checkGameOver();
         if (changed) {
             setChanged();
@@ -158,16 +159,22 @@ public class Model extends Observable {
         return changed;
     }
 
+    /**
+     * Process one column of the board
+     * @param c column number
+     * @return true if the column changed, false otherwise
+     */
     private boolean processOneColumn(int c) {
         boolean changed = false;
         boolean isMerged = false; // last same value tile is not merged
 
+        // process from bottom to top
         for (int r = 2; r >= 0; r--) {
             if (board.tile(c, r) != null) {
                 Tile t = board.tile(c, r);
                 int lastTiltR = findLastNonEmptyTile(c, r);
 
-                // Case 1: Move + Merge
+                // Case 1: Merge
                 if(lastTiltR > 0 && hasSameValue(c, r, lastTiltR) && !isMerged){
                     // Two tiles of the same value merge into one tile containing double the initial number.
                     score += (t.value() + board.tile(c, lastTiltR).value());
@@ -175,9 +182,9 @@ public class Model extends Observable {
                     isMerged = true;
                     changed = true;
                 } else if ((lastTiltR > 0 && hasSameValue(c, r, lastTiltR) && isMerged)|| hasSpaceAbove(c, r)){
-                    // Case 2: Move Only
-                    // different value + have space above
-                    // same value + merged before
+                    // Case 2: Move
+                    // a) current is the top most item -> don't move
+                    // b) different value + has space -> move to the top most empty tile
                     isMerged = false;
                     if(lastTiltR < 0){
                         board.move(c, board.size() - 1, t);
@@ -194,7 +201,14 @@ public class Model extends Observable {
         return changed;
     }
 
-    // Find last non-empty tile above the current tile
+    /**
+     * Find the last non-empty tile in the column
+     * @param c column number
+     * @param r row number
+     * @return the row number of the last non-empty tile
+     *         -1 if current is the top most tile
+     *         -2 if no tile above
+     */
     private int findLastNonEmptyTile(int c, int r) {
         int topRow = board.size() - 1;
         // current is the top most tile -> no tile above
@@ -203,7 +217,6 @@ public class Model extends Observable {
         }
 
         for (int i = r + 1; i <= topRow; i++) {
-            int currentRow = i;
             if (board.tile(c, i) != null) {
                 return i;
             }
@@ -212,16 +225,29 @@ public class Model extends Observable {
         return -2;
     }
 
+    /**
+     * Check if there is space above the current tile
+     * @param c column number
+     * @param r row number
+     * @return true if there is space above, false otherwise
+     */
     private boolean hasSpaceAbove(int c, int r){
         int lastNonEmptyTileRow = findLastNonEmptyTile(c, r);
 
+        // current is the top most tile -> no tile above or no space above
         if(lastNonEmptyTileRow == -1 || (lastNonEmptyTileRow - r == 1)){
             return false;
         }
         return true;
     }
 
-    // compare two tile's value, return true if two tile have same value
+    /**
+     * Check if the current tile has the same value as the target tile
+     * @param c column number
+     * @param curR current row number
+     * @param targetR target row number
+     * @return true if the current tile has the same value as the target tile, false otherwise
+     */
     private boolean hasSameValue(int c, int curR, int targetR) {
         return board.tile(c, curR).value() == board.tile(c, targetR).value();
     }
@@ -268,6 +294,7 @@ public class Model extends Observable {
         int size = b.size();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
+                // check if the tile is not null and has the max value
                 if (b.tile(i, j) != null && b.tile(i, j).value() == MAX_PIECE) {
                     return true;
                 }
@@ -287,6 +314,9 @@ public class Model extends Observable {
         return emptySpaceExists(b) || adjacentTilesMatch(b);
     }
 
+    /**
+     * Returns true if there are two adjacent tiles with the same value.
+     */
     private static boolean adjacentTilesMatch(Board b) {
         int size = b.size();
         for (int i = 0; i < size; i++) {
