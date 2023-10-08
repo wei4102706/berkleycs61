@@ -21,7 +21,28 @@ public class TimeAList {
         timeAListConstruction();
     }
 
+    /** Times how long it takes to call getLast. */
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
+        // Done: YOUR CODE HERE
+        int maxN = 128000;
+//        int maxN = 1000000;
+        AList<Integer> Ns = new AList<>();
+        for(int i = 1000; i <= maxN; i *= 2){
+            Ns.addLast(i);
+        }
+        AList<Double> times = new AList<>();
+
+        for(int j = 0; j < Ns.size(); j++){
+            AList<Integer> test = new AList<>();
+            // Start timing
+            Stopwatch sw = new Stopwatch();
+            for(int i = 0; i < Ns.get(j); i++){
+                test.addLast(i);
+            }
+            // Stop timing
+            double timeInSeconds = sw.elapsedTime();
+            times.addLast(timeInSeconds);
+        }
+        printTimingTable(Ns, times, Ns);
     }
 }
