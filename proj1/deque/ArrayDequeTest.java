@@ -114,7 +114,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void get() {
+    public void get_fullDeque() {
         ArrayDeque<Integer> deque = new ArrayDeque<>();
         deque.addLast(1);
         deque.addLast(2);
@@ -127,5 +127,26 @@ public class ArrayDequeTest {
 
         int actual = deque.get(3);
         assertEquals(4, actual);
+    }
+
+    @Test
+    public void get_emptyDeque() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        assertNull( deque.get(3));
+    }
+
+    @Test
+    public void get_invalidItem() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        deque.addLast(1);
+        deque.addLast(2);
+        deque.addLast(3);
+        deque.addLast(4);
+        deque.addLast(5);
+        deque.addLast(6);
+        deque.addLast(7);
+        deque.addLast(8);
+
+        assertNull( deque.get(9));
     }
 }
