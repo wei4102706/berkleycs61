@@ -42,7 +42,7 @@ public class TestArrayDequeEC {
                 operations.add("addLast(" + i + ")");
                 Integer actual = student.get(student.size() - 1);
                 Integer expected = solution.get(solution.size() - 1);
-                assertEquals(operationToString(operations) + actual, expected, actual);
+                assertEquals(operationToString(operations), expected, actual);
             } else if (operationNumber == 2) {
                 if (student.size() > 0) {
                     operations.add("removeFirst()");
