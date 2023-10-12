@@ -2,11 +2,12 @@ package deque;
 
 import static java.lang.System.arraycopy;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
     T[] items;
     int size;
     int front;
     int back;
+
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
@@ -15,6 +16,7 @@ public class ArrayDeque<T> {
         back = 4;
     }
 
+    @Override
     public void addFirst(T item){
         if (size > items.length) {
             resize(size * 2);
@@ -26,8 +28,6 @@ public class ArrayDeque<T> {
             front--;
         }
 
-
-
         items[front] = item;
         size++;
         if(size == 1) {
@@ -35,6 +35,7 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public void addLast(T item){
         if(size > items.length) {
             resize(size * 2);
@@ -46,8 +47,6 @@ public class ArrayDeque<T> {
             back++;
         }
 
-
-
         items[back] = item;
         size++;
         if(size == 1) {
@@ -55,14 +54,12 @@ public class ArrayDeque<T> {
         }
     }
 
-    public boolean isEmpty(){
-        return size == 0;
-    }
-
+    @Override
     public int size(){
         return size;
     }
 
+    @Override
     public void printDeque() {
         int count = 0;
         for(int i = front; count < size; i++){
@@ -74,6 +71,7 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public T removeFirst(){
         if(size == 0){
             return null;
@@ -91,6 +89,7 @@ public class ArrayDeque<T> {
         return item;
     }
 
+    @Override
     public T removeLast() {
         if(size == 0){
             return null;
@@ -108,6 +107,7 @@ public class ArrayDeque<T> {
         return item;
     }
 
+    @Override
     public T get(int index) {
         if (index >= size) {
             return null;

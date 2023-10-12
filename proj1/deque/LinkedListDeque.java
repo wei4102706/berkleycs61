@@ -1,6 +1,6 @@
 package deque;
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     ListNode front;
     ListNode back;
     int size;
@@ -24,6 +24,7 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
+    @Override
     public void addFirst(T val) {
         ListNode node = new ListNode(val); // node to add
         node.next = front.next;
@@ -33,6 +34,7 @@ public class LinkedListDeque<T> {
         size++;
     }
 
+    @Override
     /* Adds an item of type T to the back of the deque. */
     public void addLast(T val) {
         ListNode node = new ListNode(val);
@@ -43,20 +45,18 @@ public class LinkedListDeque<T> {
         size++;
     }
 
-    /* Returns true if deque is empty, false otherwise. */
-    public boolean isEmpty() {
-        return size == 0;
-    }
 
     /* Returns the number of items in the deque. */
+    @Override
     public int size() {
         return size;
     }
 
     /* Prints the items in the deque from first to last, separated by a space. */
+    @Override
     public void printDeque() {
         ListNode node = front;
-        while(node != null && node.next != back) {
+        while (node != null && node.next != back) {
             node = node.next;
             System.out.print(node.val + " ");
         }
@@ -66,6 +66,7 @@ public class LinkedListDeque<T> {
     /* Removes and returns the item at the front of the deque.
      * If no such item exists, returns null.
      */
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -81,6 +82,7 @@ public class LinkedListDeque<T> {
         return (T) node.val;
     }
 
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -99,13 +101,14 @@ public class LinkedListDeque<T> {
     /* Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null.
      */
+    @Override
     public T get(int index) {
         ListNode node = front;
         int count = 0;
 
         while (node != null && node.next != back) {
             node = node.next;
-            if ( count == index) {
+            if (count == index) {
                 return (T) node.val;
             }
         }
@@ -119,10 +122,10 @@ public class LinkedListDeque<T> {
     }
 
     private T recursiveHelper(ListNode ptr, int count) {
-        if(count == 0){
+        if (count == 0) {
             return (T) ptr.val;
         }
-         ptr = ptr.next;
+        ptr = ptr.next;
         return recursiveHelper(ptr, count - 1);
     }
 }
