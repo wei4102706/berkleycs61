@@ -17,12 +17,10 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     @Override
-    public void addFirst(T item){
-        if (size > items.length) {
-            resize(size * 2);
-        }
+    public void addFirst(T item) {
+        if (size > items.length) resize(size * 2);
 
-        if(front == 0) {
+        if (front == 0) {
             front = items.length - 1;
         } else {
             front--;
@@ -30,18 +28,18 @@ public class ArrayDeque<T> implements Deque<T> {
 
         items[front] = item;
         size++;
-        if(size == 1) {
+        if (size == 1) {
             back = front;
         }
     }
 
     @Override
-    public void addLast(T item){
-        if(size > items.length) {
+    public void addLast(T item) {
+        if (size > items.length) {
             resize(size * 2);
         }
 
-        if(back == items.length - 1) {
+        if (back == items.length - 1) {
             back = 0;
         } else {
             back++;
@@ -49,21 +47,21 @@ public class ArrayDeque<T> implements Deque<T> {
 
         items[back] = item;
         size++;
-        if(size == 1) {
+        if (size == 1) {
             front = back;
         }
     }
 
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 
     @Override
     public void printDeque() {
         int count = 0;
-        for(int i = front; count < size; i++){
-            if(i==items.length){
+        for (int i = front; count < size; i++) {
+            if (i == items.length) {
                 i = 0;
             }
             System.out.print(items[i] + " ");
@@ -72,14 +70,14 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     @Override
-    public T removeFirst(){
-        if(size == 0){
+    public T removeFirst() {
+        if (size == 0) {
             return null;
         }
 
         T item = items[front];
         items[front] = null;
-        if(front == items.length - 1){
+        if (front == items.length - 1) {
             front = 0;
         } else {
             front++;
@@ -91,7 +89,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T removeLast() {
-        if(size == 0){
+        if (size == 0) {
             return null;
         }
 
@@ -120,10 +118,10 @@ public class ArrayDeque<T> implements Deque<T> {
         return items[i];
     }
 
-    private void resize(int capacity){
+    private void resize(int capacity) {
         T[] newArr = (T[]) new Object[capacity];
 
-        if (front < back){
+        if (front < back) {
             arraycopy(items, front, newArr, 0, size);
         } else {
             arraycopy(items, front, newArr, 0, items.length - front);
