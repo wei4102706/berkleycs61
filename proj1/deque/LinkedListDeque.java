@@ -157,21 +157,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     private class LinkedListDequeIterator implements Iterator<T> {
-        int position;
+        ListNode current;
 
         public LinkedListDequeIterator() {
-            position = 0;
+            this.current = front.next;
         }
 
         @Override
         public boolean hasNext() {
-            return position < size;
+            return current != back;
         }
 
         @Override
         public T next() {
-            T item = get(position);
-            position++;
+            T item = (T) current.val;
+            current = current.next;
             return item;
         }
     }
