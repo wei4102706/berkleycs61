@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import static java.lang.System.arraycopy;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      private T[] items;
     private int size;
     private int front;
@@ -68,6 +68,7 @@ public class ArrayDeque<T> implements Deque<T> {
             return null;
         }
 
+
         T item = items[front];
         items[front] = null;
         if (front == items.length - 1) {
@@ -76,6 +77,10 @@ public class ArrayDeque<T> implements Deque<T> {
             front++;
         }
         size--;
+
+        if(size <= items.length / 4 && items.length >= 16) {
+            resize(items.length / 2);
+        }
 
         return item;
     }
@@ -94,6 +99,10 @@ public class ArrayDeque<T> implements Deque<T> {
             back--;
         }
         size--;
+
+        if(size <= items.length / 4 && items.length >= 16) {
+            resize(items.length / 2);
+        }
 
         return item;
     }
@@ -136,7 +145,7 @@ public class ArrayDeque<T> implements Deque<T> {
         return Arrays.equals(items, ((ArrayDeque) o).items);
     }
 
-    public class ArrayDequeIterator implements Iterator<T> {
+    private class ArrayDequeIterator implements Iterator<T> {
         int index;
 
         public ArrayDequeIterator() {

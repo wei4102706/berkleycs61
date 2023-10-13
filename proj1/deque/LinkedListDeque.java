@@ -2,12 +2,12 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Deque<T> {
-    ListNode front;
-    ListNode back;
-    int size;
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
+    private ListNode front;
+    private ListNode back;
+    private int size;
 
-    public class ListNode<T> {
+    private class ListNode<T> {
         T val;
         ListNode next;
         ListNode prev;
@@ -15,12 +15,16 @@ public class LinkedListDeque<T> implements Deque<T> {
         public ListNode(T val) {
             this.val = val;
         }
+
+        public ListNode() {
+            this.val = null;
+        }
     }
 
     /* Creates an empty linked list deque. */
     public LinkedListDeque() {
-        front = new ListNode(0);
-        back = new ListNode(100);
+        front = new ListNode();
+        back = new ListNode();
         front.next = back;
         back.prev = front;
         size = 0;
@@ -46,7 +50,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         node.next = back;
         size++;
     }
-
 
     /* Returns the number of items in the deque. */
     @Override
@@ -113,6 +116,7 @@ public class LinkedListDeque<T> implements Deque<T> {
             if (count == index) {
                 return (T) node.val;
             }
+            count ++;
         }
 
         return null;
@@ -120,15 +124,17 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     /* Same as get, but uses recursion. */
     public T getRecursive(int index) {
-        return recursiveHelper(front, index);
+        return (T) recursiveHelper(front.next, index);
     }
 
     private T recursiveHelper(ListNode ptr, int count) {
+        if (ptr == null || count < 0) {
+            return null;
+        }
         if (count == 0) {
             return (T) ptr.val;
         }
-        ptr = ptr.next;
-        return recursiveHelper(ptr, count - 1);
+        return (T) recursiveHelper(ptr.next, count - 1);
     }
 
     public Iterator<T> iterator() {
@@ -141,7 +147,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         ListNode a = front;
         ListNode b = ((LinkedListDeque) o).front;
         while (a != null || b != null) {
-            if (a == null || b == null || a.val != b.val) {
+            if (a == null || b == null || !a.val.equals(b.val)) {
                 return false;
             }
             a = a.next;
