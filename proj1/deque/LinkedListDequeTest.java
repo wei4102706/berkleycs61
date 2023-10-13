@@ -1,11 +1,8 @@
 package deque;
 
 import org.junit.Test;
-
 import java.util.Iterator;
-
 import static org.junit.Assert.*;
-
 
 /**
  * Performs some basic linked list tests.
@@ -195,7 +192,7 @@ public class LinkedListDequeTest {
     }
 
     @Test
-    public void testIterator_twoIterators(){
+    public void testIterator_twoIterators() {
         LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
         lld1.addLast(0);
         lld1.addLast(1);

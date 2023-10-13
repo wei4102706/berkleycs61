@@ -116,7 +116,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             if (count == index) {
                 return (T) node.val;
             }
-            count ++;
+            count++;
         }
 
         return null;
