@@ -151,5 +151,4 @@ public class ArrayDequeTest {
             deque.addLast(i);
         }
     }
-
 }

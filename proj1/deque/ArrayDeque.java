@@ -2,8 +2,6 @@ package deque;
 
 import java.util.Iterator;
 
-import deque.Deque;
-
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private static final int INITIAL_CAPACITY = 8;
     private T[] items;
@@ -120,9 +118,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Deque)) return false;
-        if (this.size != ((Deque<?>) o).size()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        if (this.size != ((Deque<?>) o).size()) {
+            return false;
+        }
         Deque<?> that = (Deque<?>) o;
         for (int i = 0; i < size; i++) {
             if (!this.get(i).equals(that.get(i))) {
@@ -135,7 +139,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
         int index;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             index = 0;
         }
 

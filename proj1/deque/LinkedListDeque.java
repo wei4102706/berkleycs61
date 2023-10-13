@@ -12,11 +12,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         ListNode next;
         ListNode prev;
 
-        public ListNode(T val) {
+        ListNode(T val) {
             this.val = val;
         }
 
-        public ListNode() {
+        ListNode() {
             this.val = null;
         }
     }
@@ -41,8 +41,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
-    /* Adds an item of type T to the back of the deque. */
-    public void addLast(T val) {
+    /* Adds an item of type T to the back of the deque. */ public void addLast(T val) {
         ListNode node = new ListNode(val);
         node.prev = back.prev;
         back.prev.next = node;
@@ -142,10 +141,16 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Deque)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Deque)) {
+            return false;
+        }
         Deque<?> otherDeque = (Deque<?>) o;
-        if (this.size != otherDeque.size()) return false;
+        if (this.size != otherDeque.size()) {
+            return false;
+        }
 
         for (int i = 0; i < this.size(); i++) {  // Iterate through all elements
             T thisValue = this.get(i);  // Get value from this deque
@@ -165,7 +170,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class LinkedListDequeIterator implements Iterator<T> {
         ListNode current;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             this.current = front.next;
         }
 
