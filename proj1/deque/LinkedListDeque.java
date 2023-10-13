@@ -143,15 +143,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LinkedListDeque)) return false;
-        ListNode a = front;
-        ListNode b = ((LinkedListDeque) o).front;
-        while (a != null || b != null) {
-            if (a == null || b == null || !a.val.equals(b.val)) {
-                return false;
+        if (!(o instanceof Deque)) return false;
+        Deque<?> otherDeque = (Deque<?>) o;
+        if (this.size != otherDeque.size()) return false;
+
+        for (int i = 0; i < this.size(); i++) {  // Iterate through all elements
+            T thisValue = this.get(i);  // Get value from this deque
+            Object otherValue = otherDeque.get(i);  // Get value from the other deque
+
+            if (thisValue == null && otherValue == null) {
+                continue;  // If both values are null, continue to the next elements
             }
-            a = a.next;
-            b = b.next;
+
+            if (thisValue == null || otherValue == null || !thisValue.equals(otherValue)) {
+                return false;  // If one value is null, or values are not equal, return false
+            }
         }
         return true;
     }

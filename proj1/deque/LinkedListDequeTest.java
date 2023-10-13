@@ -1,7 +1,9 @@
 package deque;
 
 import org.junit.Test;
+
 import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -212,4 +214,24 @@ public class LinkedListDequeTest {
         assertEquals(false, iter2.hasNext());
     }
 
+    @Test
+    public void testLinkedListDequeEquals() {
+        LinkedListDeque<String> deque1 = new LinkedListDeque<>();
+        LinkedListDeque<String> deque2 = new LinkedListDeque<>();
+
+        // Adding elements
+        deque1.addFirst("hello");
+        deque1.addLast("world");
+        deque2.addFirst("hello");
+        deque2.addLast("world");
+
+        // Test equals (should be true)
+        assertTrue(deque1.equals(deque2));
+
+        // Modify deque2
+        deque2.removeLast();
+
+        // Test equals (should be false now)
+        assertFalse(deque1.equals(deque2));
+    }
 }

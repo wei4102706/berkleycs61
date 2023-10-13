@@ -2,6 +2,7 @@ package deque;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
@@ -102,6 +103,47 @@ public class ArrayDequeTest {
             otherDeque.addLast(i);
         }
         assertTrue(deque.equals(otherDeque));
+    }
+
+    @Test
+    public void testArrayDequeEquals() {
+        ArrayDeque<String> deque1 = new ArrayDeque<>();
+        ArrayDeque<String> deque2 = new ArrayDeque<>();
+
+        // Adding elements
+        deque1.addFirst("hello");
+        deque1.addLast("world");
+        deque2.addFirst("hello");
+        deque2.addLast("world");
+
+        // Test equals (should be true)
+        assertTrue(deque1.equals(deque2));
+
+        // Modify deque2
+        deque2.removeLast();
+
+        // Test equals (should be false now)
+        assertFalse(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testCrossTypeEquals() {
+        LinkedListDeque<String> lld = new LinkedListDeque<>();
+        ArrayDeque<String> ad = new ArrayDeque<>();
+
+        // Adding elements
+        lld.addFirst("hello");
+        lld.addLast("world");
+        ad.addFirst("hello");
+        ad.addLast("world");
+
+        assertTrue(lld.equals(ad));
+
+        // Modify ad
+        ad.removeLast();
+
+        // Test equals (should be false now)
+        assertFalse(lld.equals(ad));
     }
 
     private void fillDeque() {

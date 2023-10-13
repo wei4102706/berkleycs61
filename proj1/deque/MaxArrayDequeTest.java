@@ -1,8 +1,10 @@
 package deque;
 
 import org.junit.Test;
+
 import java.util.Comparator;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.Assert.*;
 
 public class MaxArrayDequeTest {
 
@@ -40,5 +42,21 @@ public class MaxArrayDequeTest {
         Integer expected = 1;
         Integer actual = test.max(bitCount);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMaxArrayDequeEquals() {
+        Comparator<Integer> comparator = Integer::compareTo;
+        MaxArrayDeque<Integer> mad1 = new MaxArrayDeque<>(comparator);
+        MaxArrayDeque<Integer> mad2 = new MaxArrayDeque<>(comparator);
+
+        mad1.addFirst(1);
+        mad1.addLast(2);
+        mad2.addFirst(1);
+        mad2.addLast(2);
+        assertTrue(mad1.equals(mad2));
+
+        mad2.removeLast();
+        assertFalse(mad1.equals(mad2));
     }
 }
