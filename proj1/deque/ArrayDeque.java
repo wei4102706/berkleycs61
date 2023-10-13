@@ -1,13 +1,15 @@
 package deque;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import static java.lang.System.arraycopy;
 
 public class ArrayDeque<T> implements Deque<T> {
-    T[] items;
-    int size;
-    int front;
-    int back;
-
+     private T[] items;
+    private int size;
+    private int front;
+    private int back;
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
@@ -18,13 +20,11 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void addFirst(T item) {
-        if (size > items.length) resize(size * 2);
-
-        if (front == 0) {
-            front = items.length - 1;
-        } else {
-            front--;
+        if (size >= items.length) {
+            resize(size * 2);
         }
+
+        front = (front == 0) ? items.length - 1 : front - 1;
 
         items[front] = item;
         size++;
@@ -35,15 +35,11 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void addLast(T item) {
-        if (size > items.length) {
+        if (size >= items.length) {
             resize(size * 2);
         }
 
-        if (back == items.length - 1) {
-            back = 0;
-        } else {
-            back++;
-        }
+        back = (back == items.length - 1)? 0 : back + 1;
 
         items[back] = item;
         size++;
@@ -60,10 +56,7 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public void printDeque() {
         int count = 0;
-        for (int i = front; count < size; i++) {
-            if (i == items.length) {
-                i = 0;
-            }
+        for (int i = front; count < size; i = (i + 1) % items.length) {
             System.out.print(items[i] + " ");
             count++;
         }
@@ -126,6 +119,40 @@ public class ArrayDeque<T> implements Deque<T> {
         } else {
             arraycopy(items, front, newArr, 0, items.length - front);
             arraycopy(items, 0, newArr, items.length - front, back + 1);
+        }
+        front = 0;
+        back = size - 1;
+        items = newArr;
+    }
+
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayDeque)) return false;
+        return Arrays.equals(items, ((ArrayDeque) o).items);
+    }
+
+    public class ArrayDequeIterator implements Iterator<T> {
+        int index;
+
+        public ArrayDequeIterator() {
+            index = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public T next() {
+            T item = (T) get(index);
+            index++;
+            return item;
         }
     }
 }

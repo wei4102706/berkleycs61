@@ -1,24 +1,26 @@
 package deque;
 
+import java.util.Iterator;
+
 public interface Deque<T> {
     void addFirst(T item);
 
-     void addLast(T item);
+    void addLast(T item);
 
-     /**
-      * Returns true if deque is empty, false otherwise.
-      */
-     default boolean isEmpty(){
-            return size() == 0;
-     }
+    /**
+     * Returns true if deque is empty, false otherwise.
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
 
-     int size();
+    int size();
 
-     void printDeque();
+    void printDeque();
 
-     T removeFirst();
+    T removeFirst();
 
-     T removeLast();
+    T removeLast();
 
-     T get(int index);
+    T get(int index);
 }

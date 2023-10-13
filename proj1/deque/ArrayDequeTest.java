@@ -23,6 +23,27 @@ public class ArrayDequeTest {
 
         deque.addFirst(5);
         assertEquals(5, deque.size());
+
+        deque.addFirst(6);
+        assertEquals(6, deque.size());
+
+        deque.addFirst(7);
+        assertEquals(7, deque.size());
+
+        deque.addFirst(8);
+        assertEquals(8, deque.size());
+
+        deque.addFirst(9);
+        assertEquals(9, deque.size());
+
+        deque.addFirst(10);
+        assertEquals(10, deque.size());
+
+        deque.addFirst(11);
+        assertEquals(11, deque.size());
+
+        deque.addFirst(12);
+        assertEquals(12, deque.size());
     }
 
 
@@ -44,6 +65,18 @@ public class ArrayDequeTest {
 
         deque.addLast(5);
         assertEquals(5, deque.size());
+
+        deque.addLast(6);
+        assertEquals(6, deque.size());
+
+        deque.addLast(7);
+        assertEquals(7, deque.size());
+
+        deque.addLast(8);
+        assertEquals(8, deque.size());
+
+        deque.addLast(9);
+        assertEquals(9, deque.size());
     }
 
     @Test

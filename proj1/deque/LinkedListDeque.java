@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 public class LinkedListDeque<T> implements Deque<T> {
     ListNode front;
     ListNode back;
@@ -127,5 +129,44 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
         ptr = ptr.next;
         return recursiveHelper(ptr, count - 1);
+    }
+
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinkedListDeque)) return false;
+        ListNode a = front;
+        ListNode b = ((LinkedListDeque) o).front;
+        while (a != null || b != null) {
+            if (a == null || b == null || a.val != b.val) {
+                return false;
+            }
+            a = a.next;
+            b = b.next;
+        }
+        return true;
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T> {
+        int position;
+
+        public LinkedListDequeIterator() {
+            position = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return position < size;
+        }
+
+        @Override
+        public T next() {
+            T item = get(position);
+            position++;
+            return item;
+        }
     }
 }
