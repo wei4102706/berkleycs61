@@ -10,6 +10,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
         this.c = c;
     }
 
+    // Returns the maximum element in the deque as determined by the previously
     public T max() {
         return max(c);
     }
